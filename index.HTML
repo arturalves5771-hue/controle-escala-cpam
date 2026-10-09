@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Bloqueio e Compensação</title>
+    <!-- Font Awesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1150px;
+            width: 100%;
+            margin: 0 auto;
+            flex-grow: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            background-color: #4f46e5;
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Seletor de Mês e Destaque */
+        .month-selector-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .month-display {
+            font-size: 22px;
+            font-weight: 800;
+            color: #4f46e5;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .month-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-nav-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .month-nav-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .month-picker {
+            padding: 7px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            outline: none;
+            background: #f8fafc;
+            cursor: pointer;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary { background-color: #4f46e5; color: white; }
+        .btn-primary:hover { background-color: #4338ca; }
+
+        .btn-success { background-color: #059669; color: white; }
+        .btn-success:hover { background-color: #047857; }
+
+        .btn-dark { background-color: #1e293b; color: white; }
+        .btn-dark:hover { background-color: #0f172a; }
+
+        .btn-danger { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        .btn-danger:hover { background-color: #fee2e2; }
+
+        main {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 16px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+
+        textarea.auto-expand {
+            width: 100%;
+            min-height: 38px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 14px;
+            color: #334155;
+            background: transparent;
+            resize: none;
+            overflow: hidden;
+            outline: none;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        textarea.auto-expand:hover {
+            border-color: #cbd5e1;
+        }
+
+        textarea.auto-expand:focus {
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .btn-delete {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #94a3b8;
+            padding: 0 5px;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            main { border: none !important; box-shadow: none !important; }
+            th, td { border: 1px solid #94a3b8 !important; padding: 8px !important; }
+            textarea { border: none !important; padding: 0 !important; }
+            .print-month-header {
+                display: block !important;
+                font-size: 18pt;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+        }
+
+        .print-month-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <div class="header-icon no-print">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <div>
+                    <h1>Controle de Escala</h1>
+                    <p class="subtitle">Bloqueios de Agenda e Compensações de Horários</p>
+                </div>
+            </div>
+
+            <div class="actions no-print">
+                <button onclick="addRow()" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i> Nova Linha
+                </button>
+                <button onclick="saveData(true)" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar
+                </button>
+                <button onclick="window.print()" class="btn btn-dark">
+                    <i class="fa-solid fa-file-pdf"></i> Imprimir / PDF
+                </button>
+                <button onclick="clearAll()" class="btn btn-danger" title="Limpar este mês">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Barra do Mês em Destaque Grande -->
+        <div class="month-selector-bar no-print">
+            <div class="month-display">
+                <i class="fa-regular fa-calendar-days text-indigo-600"></i>
+                <span id="currentMonthLabel"></span>
+            </div>
+            
+            <div class="month-controls">
+                <button onclick="changeMonth(-1)" class="month-nav-btn"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+                <input type="month" id="monthPicker" class="month-picker" onchange="onMonthSelectChange()">
+                <button onclick="changeMonth(1)" class="month-nav-btn">Próximo <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Título do mês visível na Impressão/PDF -->
+        <div class="print-month-header" id="printMonthLabel"></div>
+
+        <main>
+            <div class="table-responsive">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 28%;">Profissional</th>
+                            <th style="width: 28%;">Especialidade</th>
+                            <th style="width: 20%;">Data Bloqueio</th>
+                            <th style="width: 20%;">Data Compensação</th>
+                            <th style="width: 4%; text-align: center;" class="no-print">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Linhas geradas dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        
+        <footer class="no-print">
+            <span id="statusText">Alterações salvas automaticamente para o mês selecionado</span>
+            <span>Registros no mês: <strong id="rowCount" style="color: #475569;">0</strong></span>
+        </footer>
+    </div>
+
+    <script>
+        let currentYearMonth = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            currentYearMonth = `${year}-${month}`;
+
+            const monthPicker = document.getElementById('monthPicker');
+            monthPicker.value = currentYearMonth;
+
+            loadMonthData();
+        });
+
+        function getStorageKey() {
+            return `controle_bloqueios_${currentYearMonth}`;
+        }
+
+        function updateMonthLabel() {
+            const [year, month] = currentYearMonth.split('-');
+            const date = new Date(year, month - 1);
+            const monthName = date.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+            const formatted = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            
+            document.getElementById('currentMonthLabel').textContent = formatted;
+            document.getElementById('printMonthLabel').textContent = 'Mês: ' + formatted;
+        }
+
+        function changeMonth(delta) {
+            const [year, month] = currentYearMonth.split('-').map(Number);
+            const newDate = new Date(year, month - 1 + delta, 1);
+            
+            const newYear = newDate.getFullYear();
+            const newMonth = String(newDate.getMonth() + 1).padStart(2, '0');
+            
+            currentYearMonth = `${newYear}-${newMonth}`;
+            document.getElementById('monthPicker').value = currentYearMonth;
+            
+            loadMonthData();
+        }
+
+        function onMonthSelectChange() {
+            const picker = document.getElementById('monthPicker');
+            if (picker.value) {
+                currentYearMonth = picker.value;
+                loadMonthData();
+            }
+        }
+
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+
+        function addRow(prof = '', esp = '', bloq = '', comp = '') {
+            const tbody = document.getElementById('tableBody');
+            const rowId = 'row_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+
+            const tr = document.createElement('tr');
+            tr.id = rowId;
+
+            tr.innerHTML = `
+                <td>
+                    <textarea rows="1" placeholder="Nome do profissional" class="auto-expand" style="font-weight: 600; color: #0f172a;"></textarea>
+                </td>
+                <td>
+                    <textarea rows="1" placeholder="Especialidade" class="auto-expand"></textarea>
+                </td>
+                <td>
+                    <textarea rows="1" placeholder="Ex: 10/05, Segunda..." class="auto-expand"></textarea>
+                </td>
+                <td>
+                    <textarea rows="1" placeholder="Ex: 15/05, À combinar..." class="auto-expand"></textarea>
+                </td>
+                <td style="text-align: center;" class="no-print">
+                    <button onclick="removeRow('${rowId}')" class="btn-delete" title="Excluir linha">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            const tas = tr.querySelectorAll('textarea');
+            tas[0].value = prof;
+            tas[1].value = esp;
+            tas[2].value = bloq;
+            tas[3].value = comp;
+
+            tas.forEach(ta => {
+                autoResize(ta);
+                ta.addEventListener('input', () => {
+                    autoResize(ta);
+                    triggerAutoSave();
+                });
+            });
+
+            updateRowCount();
+            triggerAutoSave();
+        }
+
+        function removeRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) {
+                row.remove();
+                updateRowCount();
+                triggerAutoSave();
+            }
+        }
+
+        function updateRowCount() {
+            const count = document.querySelectorAll('#tableBody tr').length;
+            document.getElementById('rowCount').textContent = count;
+        }
+
+        function collectData() {
+            const rows = document.querySelectorAll('#tableBody tr');
+            const data = [];
+
+            rows.forEach(row => {
+                const tas = row.querySelectorAll('textarea');
+                if (tas.length >= 4) {
+                    data.push({
+                        prof: tas[0].value,
+                        esp: tas[1].value,
+                        bloq: tas[2].value,
+                        comp: tas[3].value
+                    });
+                }
+            });
+
+            return data;
+        }
+
+        function saveData(showAlert = false) {
+            const data = collectData();
+            localStorage.setItem(getStorageKey(), JSON.stringify(data));
+            if (showAlert) {
+                alert('Dados salvos com sucesso!');
+            }
+        }
+
+        function loadMonthData() {
+            updateMonthLabel();
+            document.getElementById('tableBody').innerHTML = '';
+
+            const saved = localStorage.getItem(getStorageKey());
+
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(item => addRow(item.prof, item.esp, item.bloq, item.comp));
+                        updateRowCount();
+                        return;
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            addRow();
+        }
+
+        let autoSaveTimer = null;
+        function triggerAutoSave() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                saveData(false);
+            }, 500);
+        }
+
+        function clearAll() {
+            if (confirm(`Deseja apagar todos os registros deste mês?`)) {
+                document.getElementById('tableBody').innerHTML = '';
+                localStorage.removeItem(getStorageKey());
+                addRow();
+                updateRowCount();
+            }
+        }
+    </script>
+</body>
+</html>
