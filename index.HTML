@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Bloqueio e Compensação</title>
+    <title>Ambulatório - CPAM - Controle de Escala</title>
     <!-- Font Awesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
@@ -20,8 +20,8 @@
         }
 
         body {
-            background-color: #f8fafc;
-            color: #1e293b;
+            background-color: #f0fdf4; /* Verde bem clarinho de fundo */
+            color: #166534;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -42,7 +42,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #bbf7d0;
             padding-bottom: 20px;
             margin-bottom: 20px;
         }
@@ -54,22 +54,31 @@
         }
 
         .header-icon {
-            background-color: #4f46e5;
+            background-color: #16a34a; /* Verde principal */
             color: white;
             padding: 12px;
             border-radius: 12px;
             font-size: 20px;
         }
 
+        .unit-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #15803d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
         h1 {
             font-size: 24px;
-            color: #0f172a;
+            color: #052e16;
             font-weight: 700;
         }
 
         .subtitle {
             font-size: 13px;
-            color: #64748b;
+            color: #4ade80;
         }
 
         .month-selector-bar {
@@ -79,9 +88,9 @@
             background: white;
             padding: 16px 24px;
             border-radius: 14px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #bbf7d0;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(22, 163, 74, 0.04);
             flex-wrap: wrap;
             gap: 12px;
         }
@@ -89,7 +98,7 @@
         .month-display {
             font-size: 22px;
             font-weight: 800;
-            color: #4f46e5;
+            color: #15803d;
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
@@ -103,9 +112,9 @@
         }
 
         .month-nav-btn {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            color: #334155;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            color: #166534;
             padding: 8px 14px;
             border-radius: 8px;
             cursor: pointer;
@@ -115,19 +124,19 @@
         }
 
         .month-nav-btn:hover {
-            background: #e2e8f0;
-            color: #0f172a;
+            background: #dcfce7;
+            color: #052e16;
         }
 
         .month-picker {
             padding: 7px 12px;
             border-radius: 8px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #86efac;
             font-size: 14px;
             font-weight: 600;
-            color: #0f172a;
+            color: #052e16;
             outline: none;
-            background: #f8fafc;
+            background: #f0fdf4;
             cursor: pointer;
         }
 
@@ -150,26 +159,26 @@
             transition: all 0.2s;
         }
 
-        .btn-primary { background-color: #4f46e5; color: white; }
-        .btn-primary:hover { background-color: #4338ca; }
+        .btn-primary { background-color: #16a34a; color: white; }
+        .btn-primary:hover { background-color: #15803d; }
 
-        .btn-success { background-color: #059669; color: white; }
-        .btn-success:hover { background-color: #047857; }
+        .btn-success { background-color: #047857; color: white; }
+        .btn-success:hover { background-color: #065f46; }
 
-        .btn-dark { background-color: #1e293b; color: white; }
-        .btn-dark:hover { background-color: #0f172a; }
+        .btn-dark { background-color: #064e3b; color: white; }
+        .btn-dark:hover { background-color: #022c22; }
 
         .btn-danger { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
         .btn-danger:hover { background-color: #fee2e2; }
 
-        .btn-lock { background-color: #64748b; color: white; }
-        .btn-lock.unlocked { background-color: #d97706; color: white; }
+        .btn-lock { background-color: #475569; color: white; }
+        .btn-lock.unlocked { background-color: #b45309; color: white; }
 
         main {
             background: white;
             border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #bbf7d0;
+            box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.05);
             overflow: hidden;
         }
 
@@ -185,19 +194,19 @@
         }
 
         th {
-            background-color: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            background-color: #f0fdf4;
+            border-bottom: 1px solid #bbf7d0;
             padding: 14px 16px;
             font-size: 11px;
             text-transform: uppercase;
-            color: #64748b;
+            color: #166534;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
 
         td {
             padding: 10px;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f0fdf4;
             vertical-align: top;
         }
 
@@ -208,7 +217,7 @@
             border-radius: 8px;
             padding: 8px 10px;
             font-size: 14px;
-            color: #334155;
+            color: #14532d;
             background: transparent;
             resize: none;
             overflow: hidden;
@@ -218,15 +227,15 @@
         }
 
         textarea.auto-expand:disabled {
-            color: #1e293b;
+            color: #052e16;
             cursor: default;
         }
 
-        textarea.auto-expand:hover:not(:disabled) { border-color: #cbd5e1; }
+        textarea.auto-expand:hover:not(:disabled) { border-color: #86efac; }
         textarea.auto-expand:focus:not(:disabled) {
-            border-color: #6366f1;
+            border-color: #16a34a;
             background: white;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
         }
 
         .row-actions-group {
@@ -237,9 +246,9 @@
         }
 
         .btn-row-action {
-            background: #f1f5f9;
+            background: #f0fdf4;
             border: none;
-            color: #475569;
+            color: #166534;
             width: 28px;
             height: 28px;
             border-radius: 6px;
@@ -250,8 +259,8 @@
             transition: all 0.2s;
         }
         .btn-row-action:hover:not(:disabled) {
-            background: #e2e8f0;
-            color: #0f172a;
+            background: #dcfce7;
+            color: #052e16;
         }
         .btn-row-action:disabled {
             opacity: 0.3;
@@ -281,7 +290,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #94a3b8;
+            color: #15803d;
             padding: 0 5px;
         }
 
@@ -289,13 +298,14 @@
             .no-print { display: none !important; }
             body { background: white !important; padding: 0 !important; }
             main { border: none !important; box-shadow: none !important; }
-            th, td { border: 1px solid #94a3b8 !important; padding: 8px !important; }
+            th, td { border: 1px solid #166534 !important; padding: 8px !important; }
             textarea { border: none !important; padding: 0 !important; }
             .print-month-header {
                 display: block !important;
                 font-size: 18pt;
                 font-weight: bold;
                 margin-bottom: 15px;
+                color: #052e16;
             }
         }
 
@@ -308,9 +318,10 @@
         <header>
             <div class="header-title">
                 <div class="header-icon no-print">
-                    <i class="fa-solid fa-user-doctor"></i>
+                    <i class="fa-solid fa-hospital"></i>
                 </div>
                 <div>
+                    <div class="unit-title">Ambulatório - CPAM</div>
                     <h1>Controle de Escala</h1>
                     <p class="subtitle">Bloqueios de Agenda e Compensações de Horários</p>
                 </div>
@@ -337,7 +348,7 @@
 
         <div class="month-selector-bar no-print">
             <div class="month-display">
-                <i class="fa-regular fa-calendar-days text-indigo-600"></i>
+                <i class="fa-regular fa-calendar-days text-emerald-600"></i>
                 <span id="currentMonthLabel"></span>
             </div>
             
@@ -355,320 +366,4 @@
                 <table id="dataTable">
                     <thead>
                         <tr>
-                            <th style="width: 26%;">Profissional</th>
-                            <th style="width: 26%;">Especialidade</th>
-                            <th style="width: 18%;">Data Bloqueio</th>
-                            <th style="width: 18%;">Data Compensação</th>
-                            <th style="width: 12%; text-align: center;" class="no-print">Ações / Ordem</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <!-- Linhas geradas dinamicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </main>
-        
-        <footer class="no-print">
-            <span id="statusText">Modo de Leitura (Clique em "Modo Edição" para alterar)</span>
-            <span>Registros no mês: <strong id="rowCount" style="color: #475569;">0</strong></span>
-        </footer>
-    </div>
-
-    <script>
-        const SUPABASE_URL = "https://ovgkpcunpvqrcucezxfp.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_DqaHG9ksL7GRBedbZU5WgA_PbvtIE9r";
-
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        let currentYearMonth = '';
-        let isEditable = false; // Começa bloqueado
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            currentYearMonth = `${year}-${month}`;
-
-            document.getElementById('monthPicker').value = currentYearMonth;
-            loadMonthData();
-        });
-
-        function toggleEditMode() {
-            if (!isEditable) {
-                const senha = prompt("Digite a senha de edição:");
-                if (senha === "AMB2903") {
-                    isEditable = true;
-                    atualizarEstadoEdicao();
-                    alert("Modo de edição desbloqueado com sucesso!");
-                } else if (senha !== null) {
-                    alert("Senha incorreta!");
-                }
-            } else {
-                isEditable = false;
-                atualizarEstadoEdicao();
-                alert("Modo de edição bloqueado novamente.");
-            }
-        }
-
-        function atualizarEstadoEdicao() {
-            const btnLock = document.getElementById('btnLock');
-            const btnAdd = document.getElementById('btnAddRow');
-            const btnSave = document.getElementById('btnSave');
-            const btnClear = document.getElementById('btnClear');
-            const textareas = document.querySelectorAll('textarea.auto-expand');
-            const rowActions = document.querySelectorAll('.btn-row-action, .btn-delete');
-
-            if (isEditable) {
-                btnLock.innerHTML = '<i class="fa-solid fa-lock-open"></i> Modo Edição (Ativo)';
-                btnLock.className = 'btn btn-lock unlocked';
-                btnAdd.removeAttribute('disabled');
-                btnAdd.style.opacity = '1';
-                btnAdd.style.cursor = 'pointer';
-                btnSave.removeAttribute('disabled');
-                btnSave.style.opacity = '1';
-                btnSave.style.cursor = 'pointer';
-                btnClear.removeAttribute('disabled');
-                btnClear.style.opacity = '1';
-                btnClear.style.cursor = 'pointer';
-
-                textareas.forEach(ta => ta.removeAttribute('disabled'));
-                rowActions.forEach(el => {
-                    el.removeAttribute('disabled');
-                    el.style.opacity = '1';
-                    el.style.cursor = 'pointer';
-                });
-                document.getElementById('statusText').textContent = 'Modo Edição Ativo - Sincronizando em tempo real';
-            } else {
-                btnLock.innerHTML = '<i class="fa-solid fa-lock"></i> Modo Edição (Bloqueado)';
-                btnLock.className = 'btn btn-lock';
-                btnAdd.setAttribute('disabled', 'true');
-                btnAdd.style.opacity = '0.4';
-                btnAdd.style.cursor = 'not-allowed';
-                btnSave.setAttribute('disabled', 'true');
-                btnSave.style.opacity = '0.4';
-                btnSave.style.cursor = 'not-allowed';
-                btnClear.setAttribute('disabled', 'true');
-                btnClear.style.opacity = '0.4';
-                btnClear.style.cursor = 'not-allowed';
-
-                textareas.forEach(ta => ta.setAttribute('disabled', 'true'));
-                rowActions.forEach(el => {
-                    el.setAttribute('disabled', 'true');
-                    el.style.opacity = '0.3';
-                    el.style.cursor = 'not-allowed';
-                });
-                document.getElementById('statusText').textContent = 'Modo de Leitura (Bloqueado)';
-            }
-        }
-
-        function updateMonthLabel() {
-            const [year, month] = currentYearMonth.split('-');
-            const date = new Date(year, month - 1);
-            const monthName = date.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
-            const formatted = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            
-            document.getElementById('currentMonthLabel').textContent = formatted;
-            document.getElementById('printMonthLabel').textContent = 'Mês: ' + formatted;
-        }
-
-        function changeMonth(delta) {
-            const [year, month] = currentYearMonth.split('-').map(Number);
-            const newDate = new Date(year, month - 1 + delta, 1);
-            
-            const newYear = newDate.getFullYear();
-            const newMonth = String(newDate.getMonth() + 1).padStart(2, '0');
-            
-            currentYearMonth = `${newYear}-${newMonth}`;
-            document.getElementById('monthPicker').value = currentYearMonth;
-            
-            loadMonthData();
-        }
-
-        function onMonthSelectChange() {
-            const picker = document.getElementById('monthPicker');
-            if (picker.value) {
-                currentYearMonth = picker.value;
-                loadMonthData();
-            }
-        }
-
-        function autoResize(el) {
-            el.style.height = 'auto';
-            el.style.height = el.scrollHeight + 'px';
-        }
-
-        function addRow(prof = '', esp = '', bloq = '', comp = '') {
-            const tbody = document.getElementById('tableBody');
-            const rowId = 'row_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
-
-            const tr = document.createElement('tr');
-            tr.id = rowId;
-            tr.className = 'table-row-item';
-
-            const disabledAttr = isEditable ? '' : 'disabled';
-            const actionStyle = isEditable ? 'opacity: 1; cursor: pointer;' : 'opacity: 0.3; cursor: not-allowed;';
-            const actionDisabled = isEditable ? '' : 'disabled';
-
-            tr.innerHTML = `
-                <td>
-                    <textarea rows="1" placeholder="Nome do profissional" class="auto-expand" style="font-weight: 600; color: #0f172a;" ${disabledAttr}></textarea>
-                </td>
-                <td>
-                    <textarea rows="1" placeholder="Especialidade" class="auto-expand" ${disabledAttr}></textarea>
-                </td>
-                <td>
-                    <textarea rows="1" placeholder="Ex: 10/05, Segunda..." class="auto-expand" ${disabledAttr}></textarea>
-                </td>
-                <td>
-                    <textarea rows="1" placeholder="Ex: 15/05, À combinar..." class="auto-expand" ${disabledAttr}></textarea>
-                </td>
-                <td style="text-align: center;" class="no-print">
-                    <div class="row-actions-group">
-                        <button onclick="moveRow('${rowId}', -1)" class="btn-row-action" title="Mover para cima" style="${actionStyle}" ${actionDisabled}><i class="fa-solid fa-arrow-up"></i></button>
-                        <button onclick="moveRow('${rowId}', 1)" class="btn-row-action" title="Mover para baixo" style="${actionStyle}" ${actionDisabled}><i class="fa-solid fa-arrow-down"></i></button>
-                        <button onclick="removeRow('${rowId}')" class="btn-delete" title="Excluir linha" style="${actionStyle}" ${actionDisabled}><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </td>
-            `;
-
-            tbody.appendChild(tr);
-
-            const tas = tr.querySelectorAll('textarea');
-            tas[0].value = prof;
-            tas[1].value = esp;
-            tas[2].value = bloq;
-            tas[3].value = comp;
-
-            tas.forEach(ta => {
-                autoResize(ta);
-                ta.addEventListener('input', () => {
-                    autoResize(ta);
-                    if(isEditable) triggerAutoSave();
-                });
-            });
-
-            updateRowCount();
-            if(isEditable) triggerAutoSave();
-        }
-
-        function moveRow(rowId, direction) {
-            if (!isEditable) return;
-            const row = document.getElementById(rowId);
-            if (!row) return;
-
-            if (direction === -1) {
-                const prevRow = row.previousElementSibling;
-                if (prevRow) {
-                    row.parentNode.insertBefore(row, prevRow);
-                    triggerAutoSave();
-                }
-            } else if (direction === 1) {
-                const nextRow = row.nextElementSibling;
-                if (nextRow) {
-                    row.parentNode.insertBefore(nextRow, row);
-                    triggerAutoSave();
-                }
-            }
-        }
-
-        function removeRow(rowId) {
-            if (!isEditable) return;
-            const row = document.getElementById(rowId);
-            if (row) {
-                row.remove();
-                updateRowCount();
-                triggerAutoSave();
-            }
-        }
-
-        function updateRowCount() {
-            const count = document.querySelectorAll('#tableBody tr').length;
-            document.getElementById('rowCount').textContent = count;
-        }
-
-        function collectData() {
-            const rows = document.querySelectorAll('#tableBody tr');
-            const data = [];
-
-            rows.forEach(row => {
-                const tas = row.querySelectorAll('textarea');
-                if (tas.length >= 4) {
-                    data.push({
-                        prof: tas[0].value,
-                        esp: tas[1].value,
-                        bloq: tas[2].value,
-                        comp: tas[3].value
-                    });
-                }
-            });
-
-            return data;
-        }
-
-        async function saveData(showAlert = false) {
-            if (!isEditable) return;
-            const data = collectData();
-            document.getElementById('statusText').textContent = 'Sincronizando no Supabase...';
-
-            const { error } = await supabaseClient
-                .from('bloqueios')
-                .upsert({
-                    id: currentYearMonth,
-                    mes: currentYearMonth,
-                    dados: data,
-                    updated_at: new Date()
-                });
-
-            if (error) {
-                console.error("Erro ao salvar no Supabase:", error);
-                document.getElementById('statusText').textContent = 'Erro ao sincronizar dados!';
-            } else {
-                document.getElementById('statusText').textContent = 'Modo Edição Ativo - Sincronizado na nuvem';
-                if (showAlert) alert('Dados salvos com sucesso!');
-            }
-        }
-
-        async function loadMonthData() {
-            updateMonthLabel();
-            document.getElementById('statusText').textContent = 'Carregando dados...';
-            document.getElementById('tableBody').innerHTML = '';
-
-            const { data, error } = await supabaseClient
-                .from('bloqueios')
-                .select('dados')
-                .eq('id', currentYearMonth)
-                .single();
-
-            if (data && data.dados && Array.isArray(data.dados) && data.dados.length > 0) {
-                data.dados.forEach(item => addRow(item.prof, item.esp, item.bloq, item.comp));
-            } else {
-                addRow();
-            }
-
-            updateRowCount();
-            atualizarEstadoEdicao();
-        }
-
-        let autoSaveTimer = null;
-        function triggerAutoSave() {
-            if (!isEditable) return;
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(() => {
-                saveData(false);
-            }, 600);
-        }
-
-        async function clearAll() {
-            if (!isEditable) return;
-            if (confirm(`Deseja apagar todos os registros deste mês no Supabase?`)) {
-                document.getElementById('tableBody').innerHTML = '';
-                await supabaseClient.from('bloqueios').delete().eq('id', currentYearMonth);
-                addRow();
-                updateRowCount();
-                document.getElementById('statusText').textContent = 'Registros do mês removidos';
-            }
-        }
-    </script>
-</body>
-</html>
+                            <th style="width: 26
