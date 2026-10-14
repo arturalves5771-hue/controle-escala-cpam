@@ -30,7 +30,7 @@
         }
 
         .container {
-            max-width: 1150px;
+            max-width: 1250px;
             width: 100%;
             margin: 0 auto;
             flex-grow: 1;
@@ -210,7 +210,7 @@
         td {
             padding: 10px;
             border-bottom: 1px solid #f4fbf7;
-            vertical-align: top;
+            vertical-align: middle;
         }
 
         textarea.auto-expand {
@@ -240,6 +240,36 @@
             border-color: #15803d;
             background: white;
             box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+        }
+
+        select.form-control-select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: #0f291e;
+            background: transparent;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select.form-control-select:hover:not(:disabled) {
+            border-color: #86efac;
+        }
+
+        select.form-control-select:focus:not(:disabled) {
+            border-color: #15803d;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+        }
+
+        select.form-control-select:disabled {
+            color: #0f291e;
+            background: transparent;
+            cursor: default;
         }
 
         .row-actions-group {
@@ -304,7 +334,7 @@
             body { background: white !important; padding: 0 !important; color: black !important; }
             main { border: none !important; box-shadow: none !important; }
             th, td { border: 1px solid #166534 !important; padding: 8px !important; }
-            textarea { border: none !important; padding: 0 !important; color: black !important; }
+            textarea, select { border: none !important; padding: 0 !important; color: black !important; background: transparent !important; appearance: none; }
             .print-month-header {
                 display: block !important;
                 font-size: 16pt;
@@ -374,11 +404,12 @@
                 <table id="dataTable">
                     <thead>
                         <tr>
-                            <th style="width: 20%; font-size: 13px;">Profissional</th>
-                            <th style="width: 20%; font-size: 13px;">Especialidade</th>
-                            <th style="width: 24%; font-size: 13px;">Data Bloqueio</th>
-                            <th style="width: 24%; font-size: 13px;">Data Compensação</th>
-                            <th style="width: 12%; text-align: center;" class="no-print">Ações / Ordem</th>
+                            <th style="width: 17%; font-size: 13px;">Profissional</th>
+                            <th style="width: 17%; font-size: 13px;">Especialidade</th>
+                            <th style="width: 20%; font-size: 13px;">Data Bloqueio</th>
+                            <th style="width: 20%; font-size: 13px;">Data Compensação</th>
+                            <th style="width: 16%; font-size: 13px;">Tipo de Bloqueio</th>
+                            <th style="width: 10%; text-align: center;" class="no-print">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -402,6 +433,20 @@
 
         let currentYearMonth = '';
         let isEditable = false; // Começa bloqueado
+
+        const TIPOS_BLOQUEIO = [
+            "ATESTADO",
+            "BLOQUEIO DE AGENDA",
+            "COMPENSAÇÃO",
+            "CONGRESSO",
+            "FÉRIAS",
+            "LICENÇA",
+            "NÃO INFORMADO",
+            "OBSERVAÇÃO",
+            "RECESSO",
+            "REGULAÇÃO",
+            "TURNO"
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date();
@@ -437,6 +482,7 @@
             const btnSave = document.getElementById('btnSave');
             const btnClear = document.getElementById('btnClear');
             const textareas = document.querySelectorAll('textarea.auto-expand');
+            const selects = document.querySelectorAll('select.form-control-select');
             const rowActions = document.querySelectorAll('.btn-row-action, .btn-delete');
 
             if (isEditable) {
@@ -450,6 +496,7 @@
                 });
 
                 textareas.forEach(ta => ta.removeAttribute('disabled'));
+                selects.forEach(sel => sel.removeAttribute('disabled'));
                 rowActions.forEach(el => {
                     el.removeAttribute('disabled');
                     el.style.opacity = '1';
@@ -467,6 +514,7 @@
                 });
 
                 textareas.forEach(ta => ta.setAttribute('disabled', 'true'));
+                selects.forEach(sel => sel.setAttribute('disabled', 'true'));
                 rowActions.forEach(el => {
                     el.setAttribute('disabled', 'true');
                     el.style.opacity = '0.3';
@@ -512,7 +560,7 @@
             el.style.height = el.scrollHeight + 'px';
         }
 
-        function addRow(prof = '', esp = '', bloq = '', comp = '') {
+        function addRow(prof = '', esp = '', bloq = '', comp = '', tipo = '') {
             const tbody = document.getElementById('tableBody');
             const rowId = 'row_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 
@@ -523,6 +571,12 @@
             const disabledAttr = isEditable ? '' : 'disabled';
             const actionStyle = isEditable ? 'opacity: 1; cursor: pointer;' : 'opacity: 0.3; cursor: not-allowed;';
             const actionDisabled = isEditable ? '' : 'disabled';
+
+            let optionsHtml = '<option value="">Selecione...</option>';
+            TIPOS_BLOQUEIO.forEach(item => {
+                const selected = (item === tipo) ? 'selected' : '';
+                optionsHtml += `<option value="${item}" ${selected}>${item}</option>`;
+            });
 
             tr.innerHTML = `
                 <td>
@@ -536,6 +590,11 @@
                 </td>
                 <td>
                     <textarea rows="1" placeholder="Ex: 15/05, À combinar..." class="auto-expand" ${disabledAttr}></textarea>
+                </td>
+                <td>
+                    <select class="form-control-select" ${disabledAttr}>
+                        ${optionsHtml}
+                    </select>
                 </td>
                 <td style="text-align: center;" class="no-print">
                     <div class="row-actions-group">
@@ -554,12 +613,18 @@
             tas[2].value = bloq;
             tas[3].value = comp;
 
+            const sel = tr.querySelector('select');
+
             tas.forEach(ta => {
                 autoResize(ta);
                 ta.addEventListener('input', () => {
                     autoResize(ta);
                     if(isEditable) triggerAutoSave();
                 });
+            });
+
+            sel.addEventListener('change', () => {
+                if(isEditable) triggerAutoSave();
             });
 
             updateRowCount();
@@ -607,12 +672,14 @@
 
             rows.forEach(row => {
                 const tas = row.querySelectorAll('textarea');
+                const sel = row.querySelector('select');
                 if (tas.length >= 4) {
                     data.push({
                         prof: tas[0].value,
                         esp: tas[1].value,
                         bloq: tas[2].value,
-                        comp: tas[3].value
+                        comp: tas[3].value,
+                        tipo: sel ? sel.value : ''
                     });
                 }
             });
@@ -643,7 +710,6 @@
             }
         }
 
-        // Função para copiar os dados atuais para outro mês escolhido
         async function copiarParaOutroMes() {
             if (!isEditable) return;
             
@@ -670,7 +736,6 @@
 
             document.getElementById('statusText').textContent = 'Copiando para o outro mês...';
 
-            // Faz o upsert direto no Supabase para o mês de destino escolhido
             const { error } = await supabaseClient
                 .from('bloqueios')
                 .upsert({
@@ -702,7 +767,7 @@
                 .maybeSingle();
 
             if (data && data.dados && Array.isArray(data.dados) && data.dados.length > 0) {
-                data.dados.forEach(item => addRow(item.prof, item.esp, item.bloq, item.comp));
+                data.dados.forEach(item => addRow(item.prof, item.esp, item.bloq, item.comp, item.tipo));
             } else {
                 addRow();
             }
