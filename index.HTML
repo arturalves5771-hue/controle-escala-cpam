@@ -465,11 +465,18 @@
             </div>
             
             <div class="month-controls">
+                <!-- FILTRO POR NOME DO MÉDICO -->
+                <div class="filter-group">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <span>Médico:</span>
+                    <input type="text" id="filtroMedico" class="filter-select" placeholder="Filtrar por nome..." oninput="aplicarFiltros()" style="width: 160px; font-weight: 500; background: white;">
+                </div>
+
                 <!-- FILTRO POR TIPO -->
                 <div class="filter-group">
                     <i class="fa-solid fa-filter"></i>
                     <span>Filtrar Tipo:</span>
-                    <select id="filterTipo" class="filter-select" onchange="aplicarFiltroTipo()">
+                    <select id="filterTipo" class="filter-select" onchange="aplicarFiltros()">
                         <option value="">TODOS OS TIPOS</option>
                     </select>
                 </div>
@@ -726,16 +733,17 @@
 
             const sel = tr.querySelector('select');
 
-            tas.forEach(ta => {
+            tas.forEach((ta, index) => {
                 autoResize(ta);
                 ta.addEventListener('input', () => {
                     autoResize(ta);
+                    if(index === 0) aplicarFiltros(); // Atualiza o filtro do médico em tempo real se o nome mudar
                     if(isEditable) triggerAutoSave();
                 });
             });
 
             sel.addEventListener('change', () => {
-                aplicarFiltroTipo();
+                aplicarFiltros();
                 if(isEditable) triggerAutoSave();
             });
 
@@ -769,17 +777,24 @@
             triggerAutoSave();
         }
 
-        // Filtro de Tipos na Tabela
-        function aplicarFiltroTipo() {
-            const filtro = document.getElementById('filterTipo').value.toUpperCase();
+        // Filtro unificado (Tipo + Nome do Médico)
+        function aplicarFiltros() {
+            const filtroTipo = document.getElementById('filterTipo').value.toUpperCase();
+            const filtroMedico = document.getElementById('filtroMedico').value.toUpperCase().trim();
             const rows = document.querySelectorAll('#tableBody tr');
             let countVisible = 0;
 
             rows.forEach(row => {
+                const tas = row.querySelectorAll('textarea');
                 const sel = row.querySelector('select');
+                
+                const nomeProfissional = tas[0] ? tas[0].value.toUpperCase() : '';
                 const tipoLinha = sel ? sel.value.toUpperCase() : '';
 
-                if (filtro === '' || tipoLinha === filtro) {
+                const matchTipo = (filtroTipo === '' || tipoLinha === filtroTipo);
+                const matchMedico = (filtroMedico === '' || nomeProfissional.includes(filtroMedico));
+
+                if (matchTipo && matchMedico) {
                     row.style.display = '';
                     countVisible++;
                 } else {
@@ -811,7 +826,7 @@
         }
 
         function removeRow(rowId) {
-            if (!isEditable) return;
+            if !isEditable) return;
             const row = document.getElementById(rowId);
             if (row) {
                 row.remove();
@@ -821,7 +836,7 @@
         }
 
         function updateRowCount() {
-            aplicarFiltroTipo();
+            aplicarFiltros();
         }
 
         function collectData() {
@@ -832,7 +847,6 @@
                 const tas = row.querySelectorAll('textarea');
                 const sel = row.querySelector('select');
                 
-                // Identifica se a linha tem alguma cor
                 let corEncontrada = '';
                 ['verde', 'amarelo', 'azul', 'rosa', 'roxo'].forEach(c => {
                     if (row.classList.contains('bg-color-' + c)) corEncontrada = c;
@@ -938,7 +952,7 @@
                 addRow();
             }
 
-            aplicarFiltroTipo();
+            aplicarFiltros();
             atualizarEstadoEdicao();
         }
 
