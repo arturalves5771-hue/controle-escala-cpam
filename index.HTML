@@ -200,9 +200,12 @@
             overflow: hidden;
         }
 
+        /* Limite de altura máxima para permitir rolagem e fixação do cabeçalho */
         .table-responsive {
             width: 100%;
+            max-height: 70vh;
             overflow-x: auto;
+            overflow-y: auto;
         }
 
         table {
@@ -211,7 +214,11 @@
             text-align: left;
         }
 
+        /* Fixação do Cabeçalho da Tabela */
         th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
             background-color: #f0fdf4;
             border-bottom: 1px solid #cce8d9;
             padding: 14px 16px;
@@ -219,6 +226,7 @@
             color: #166534;
             font-weight: 700;
             letter-spacing: 0.5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         td {
@@ -364,7 +372,14 @@
             transform: scale(1.2);
         }
 
-        /* As 5 Cores Opostas do Grifador */
+        /* Cores das Bolinhas do Menu */
+        .circle-verde { background-color: #bbf7d0; }
+        .circle-amarelo { background-color: #fef08a; }
+        .circle-azul { background-color: #bae6fd; }
+        .circle-rosa { background-color: #fecdd3; }
+        .circle-roxo { background-color: #e9d5ff; }
+
+        /* As 5 Cores Opostas do Grifador (Linhas) */
         .bg-color-verde td { background-color: #bbf7d0 !important; }
         .bg-color-amarelo td { background-color: #fef08a !important; }
         .bg-color-azul td { background-color: #bae6fd !important; }
@@ -385,6 +400,7 @@
             .no-print { display: none !important; }
             body { background: white !important; padding: 0 !important; color: black !important; }
             main { border: none !important; box-shadow: none !important; }
+            .table-responsive { max-height: none !important; overflow: visible !important; }
             th, td { border: 1px solid #166534 !important; padding: 8px !important; }
             textarea, select { border: none !important; padding: 0 !important; color: black !important; background: transparent !important; appearance: none; }
             .print-month-header {
@@ -689,11 +705,11 @@
                         
                         <!-- Menu de Seleção das 5 Cores -->
                         <div id="colorPicker_${rowId}" class="color-picker-menu">
-                            <div class="color-circle bg-color-verde" title="Verde" onclick="setRowColor('${rowId}', 'verde')"></div>
-                            <div class="color-circle bg-color-amarelo" title="Amarelo" onclick="setRowColor('${rowId}', 'amarelo')"></div>
-                            <div class="color-circle bg-color-azul" title="Azul" onclick="setRowColor('${rowId}', 'azul')"></div>
-                            <div class="color-circle bg-color-rosa" title="Rosa/Vermelho" onclick="setRowColor('${rowId}', 'rosa')"></div>
-                            <div class="color-circle bg-color-roxo" title="Roxo" onclick="setRowColor('${rowId}', 'roxo')"></div>
+                            <div class="color-circle circle-verde" title="Verde" onclick="setRowColor('${rowId}', 'verde')"></div>
+                            <div class="color-circle circle-amarelo" title="Amarelo" onclick="setRowColor('${rowId}', 'amarelo')"></div>
+                            <div class="color-circle circle-azul" title="Azul" onclick="setRowColor('${rowId}', 'azul')"></div>
+                            <div class="color-circle circle-rosa" title="Rosa/Vermelho" onclick="setRowColor('${rowId}', 'rosa')"></div>
+                            <div class="color-circle circle-roxo" title="Roxo" onclick="setRowColor('${rowId}', 'roxo')"></div>
                             <div style="font-size: 11px; cursor: pointer; color: #dc2626; margin-left: 4px;" title="Remover Cor" onclick="setRowColor('${rowId}', '')"><i class="fa-solid fa-circle-xmark"></i></div>
                         </div>
                     </div>
