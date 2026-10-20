@@ -737,7 +737,7 @@
                 autoResize(ta);
                 ta.addEventListener('input', () => {
                     autoResize(ta);
-                    if(index === 0) aplicarFiltros(); // Atualiza o filtro do médico em tempo real se o nome mudar
+                    if(index === 0) aplicarFiltros(); 
                     if(isEditable) triggerAutoSave();
                 });
             });
@@ -826,7 +826,7 @@
         }
 
         function removeRow(rowId) {
-            if !isEditable) return;
+            if (!isEditable) return;
             const row = document.getElementById(rowId);
             if (row) {
                 row.remove();
